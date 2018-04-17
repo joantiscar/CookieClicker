@@ -9,13 +9,43 @@ package cookieclicker;
  *
  * @author joantiscar
  */
-public class CookieClicker {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+
+
+public class CookieClicker extends JFrame {
+
+    private final int FRAME_WIDTH = 800;
+    private final int FRAME_HEIGHT = 600;
+
+    private final JLabel statusbar;
+    
+    public CookieClicker() {
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        setLocationRelativeTo(null);
+        setTitle("CookieClicker");
+
+        statusbar = new JLabel("");
+        add(statusbar, BorderLayout.SOUTH);
+
+        add(new Board(statusbar));
+
+        setResizable(false);
     }
     
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            
+            @Override
+            public void run() {                
+                JFrame ex = new CookieClicker();
+                ex.setVisible(true);                
+            }
+        });
+    }
 }
