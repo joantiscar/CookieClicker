@@ -18,8 +18,10 @@ import javax.swing.SwingUtilities;
 
 public class CookieClicker extends JFrame {
 
-    private final int FRAME_WIDTH = 800;
-    private final int FRAME_HEIGHT = 600;
+    int FRAME_WIDTH = 1200;
+    int FRAME_HEIGHT = 900;
+
+
 
     private final JLabel statusbar;
     
