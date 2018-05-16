@@ -33,7 +33,7 @@ public class CookieClicker extends JFrame {
         setTitle("CookieClicker");
 
         statusbar = new JLabel("");
-        add(statusbar, BorderLayout.SOUTH);
+        
 
         add(new Board(statusbar));
 
