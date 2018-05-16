@@ -57,6 +57,14 @@ public class Board extends JPanel {
         newGame();
         Timer timer = new Timer();
         timer.schedule(new sumarCookies(), 0, 1000);
+        informacioPartida partida = new informacioPartida();
+        cookies_actuals = partida.getCookies_actuals();
+        cursors = partida.getCursors();
+        abueles = partida.getAbueles();
+        calcularCps();
+        calcularCostos();
+        
+        
     }
 
     private void initBoard() {
@@ -89,8 +97,8 @@ public class Board extends JPanel {
         g.drawImage(cursor, cursors_x + 5, cursors_y + 12, 100, 100, null);
         g.drawImage(background_button, abueles_x, abueles_y, 300, 130, null);
         g.drawImage(abuela, abueles_x + 5, abueles_y + 12, 100, 100, null);
-        g.drawImage(small_cookie, cursors_x + 250, cursors_y + 75, 32, 32, null);
-        g.drawImage(small_cookie, abueles_x + 250, abueles_y + 75, 32, 32, null);
+        g.drawImage(small_cookie, cursors_x + 110, cursors_y + 75, 32, 32, null);
+        g.drawImage(small_cookie, abueles_x + 110, abueles_y + 75, 32, 32, null);
         //dibuixem els textos
         DecimalFormat df = new DecimalFormat("#.##");
         int fontSize = 27;
@@ -108,17 +116,17 @@ public class Board extends JPanel {
         //Coses que han d'estar en roig o en verd
         if (cost_cursor <= cookies_actuals) {
             g.setColor(Color.green);
-            g.drawString(Integer.toString(cost_cursor), cursors_x + 200, cursors_y + 105);
+            g.drawString(Integer.toString(cost_cursor), cursors_x + 150, cursors_y + 105);
         } else {
             g.setColor(Color.red);
-            g.drawString(Integer.toString(cost_cursor), cursors_x + 200, cursors_y + 105);
+            g.drawString(Integer.toString(cost_cursor), cursors_x + 150, cursors_y + 105);
         }
         if (cost_abueles <= cookies_actuals) {
             g.setColor(Color.green);
-            g.drawString(Integer.toString(cost_abueles), abueles_x + 200, abueles_y + 105);
+            g.drawString(Integer.toString(cost_abueles), abueles_x + 150, abueles_y + 105);
         } else {
             g.setColor(Color.red);
-            g.drawString(Integer.toString(cost_abueles), abueles_x + 200, abueles_y + 105);
+            g.drawString(Integer.toString(cost_abueles), abueles_x + 150, abueles_y + 105);
         }
 
     }
@@ -166,6 +174,26 @@ public class Board extends JPanel {
 
     public void calcularCps() {
         cps = (cursors * 0.2 + abueles * 1);
+    }
+    public void calcularCostos() {
+        if (cursors == 0){
+            cost_cursor = 15;
+        }else{
+            for (int i = 0; i < cursors; i++) {
+                cost_cursor = (int) (cost_cursor*1.15);
+            }
+        
+        
+    }
+        if (abueles == 0){
+            cost_abueles = 100;
+        }else{
+            for (int i = 0; i < abueles; i++) {
+                cost_abueles = (int) (cost_abueles*1.15);
+            }
+        
+        
+    }
     }
 
     class sumarCookies extends TimerTask {
