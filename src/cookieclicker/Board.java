@@ -15,6 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,11 +29,12 @@ import java.text.*;
 
 public class Board extends JPanel {
 
+    private informacioPartida partida = new informacioPartida();
     private boolean inGame;
     private Image big_cookie;
     private Image background;
     private Image cursor;
-    private Image background_button;
+    private Image background_button; 
     private Image small_cookie;
     private Image abuela;
     private JLabel statusbar;
@@ -39,7 +47,8 @@ public class Board extends JPanel {
     private int frame_height = 900;
     private int cost_cursor = 15;
     private int cost_abueles = 100;
-
+    private Image guardar;
+    private Image cargar;
     //Posicions
     //cursors
     private int cursors_x = (frame_width * 70) / 100;
@@ -57,14 +66,12 @@ public class Board extends JPanel {
         newGame();
         Timer timer = new Timer();
         timer.schedule(new sumarCookies(), 0, 1000);
-        informacioPartida partida = new informacioPartida();
-        cookies_actuals = partida.getCookies_actuals();
-        cursors = partida.getCursors();
-        abueles = partida.getAbueles();
+//        cookies_actuals = partida.getCookies_actuals();
+//        cursors = partida.getCursors();
+//        abueles = partida.getAbueles();
         calcularCps();
         calcularCostos();
-        
-        
+
     }
 
     private void initBoard() {
@@ -86,6 +93,10 @@ public class Board extends JPanel {
         abuela = iAbuela.getImage();
         ImageIcon iSmall_Cookie = new ImageIcon("src/cookieclicker/img/small_Cookie.png");
         small_cookie = iSmall_Cookie.getImage();
+        ImageIcon iGuardar = new ImageIcon("src/cookieclicker/img/guardar.png");
+        guardar = iGuardar.getImage();
+        ImageIcon iCargar = new ImageIcon("src/cookieclicker/img/cargar.png");
+        cargar = iCargar.getImage();
     }
 
     @Override
@@ -99,6 +110,8 @@ public class Board extends JPanel {
         g.drawImage(abuela, abueles_x + 5, abueles_y + 12, 100, 100, null);
         g.drawImage(small_cookie, cursors_x + 110, cursors_y + 75, 32, 32, null);
         g.drawImage(small_cookie, abueles_x + 110, abueles_y + 75, 32, 32, null);
+        g.drawImage(guardar, 200, 200, 100, 100, null);
+        g.drawImage(cargar, 300, 200, 100, 100, null);
         //dibuixem els textos
         DecimalFormat df = new DecimalFormat("#.##");
         int fontSize = 27;
@@ -168,32 +181,83 @@ public class Board extends JPanel {
                 }
 
             }
+            if (x >= 200 && y >= 200 && x <= 300 && y <= 300) {
+                guardarPartida();
+            }
+            if (x >= 300 && y >= 200 && x <= 400 && y <= 300) {
+                cargarPartida();
+                calcularCps();
+                calcularCostos();
+
+                System.out.println(cursors);
+
+            }
 
         }
     }
 
+    private void guardarPartida() {
+        try {
+            FileOutputStream saveFile = new FileOutputStream("SaveObj.sav");
+            ObjectOutputStream save = new ObjectOutputStream(saveFile);
+            partida.setCursors(cursors);
+            partida.setAbueles(abueles);
+            partida.setCookies_actuals(cookies_actuals);
+            save.writeObject(partida);
+            save.close(); // This also closes saveFile.
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    private void cargarPartida() {
+        try {
+            FileInputStream saveFile = new FileInputStream("SaveObj.sav");
+
+            ObjectInputStream save = new ObjectInputStream(saveFile);
+            partida = (informacioPartida) save.readObject();
+            save.close(); 
+            carregarVariables();
+            calcularCps();
+            calcularCostos();
+            repaint();
+           
+        } catch (Exception exc) {
+            exc.printStackTrace(); // If there was an error, print the info.
+        }
+
+    }
+        private void carregarVariables(){
+            cursors = partida.getCursors();
+            abueles = partida.getAbueles();
+            cookies_actuals = partida.getCookies_actuals();
+            
+            
+        }
     public void calcularCps() {
         cps = (cursors * 0.2 + abueles * 1);
     }
+
     public void calcularCostos() {
-        if (cursors == 0){
+        if (cursors == 0) {
             cost_cursor = 15;
-        }else{
-            for (int i = 0; i < cursors; i++) {
-                cost_cursor = (int) (cost_cursor*1.15);
+        } else {
+            cost_cursor = 15;
+            for (int i = 0; i <= cursors; i++) {
+                cost_cursor = (int) (cost_cursor * 1.15);
             }
-        
-        
-    }
-        if (abueles == 0){
+
+        }
+        if (abueles == 0) {
             cost_abueles = 100;
-        }else{
+        } else {
+            cost_abueles = 100;
             for (int i = 0; i < abueles; i++) {
-                cost_abueles = (int) (cost_abueles*1.15);
+                cost_abueles = (int) (cost_abueles * 1.15);
+
             }
-        
-        
-    }
+
+        }
     }
 
     class sumarCookies extends TimerTask {
@@ -201,7 +265,6 @@ public class Board extends JPanel {
         public void run() {
 
             cookies_actuals = cookies_actuals + cps;
-            refreshStatusBar();
             repaint();
 
         }
