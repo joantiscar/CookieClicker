@@ -16,6 +16,7 @@ public class informacioPartida implements Serializable{
    private double cookies_actuals= 0;
    private int cursors = 0;
    private int abueles = 0;
+   private int granjes = 0;
 
     public String getNom() {
         return nom;
@@ -51,6 +52,14 @@ public class informacioPartida implements Serializable{
 public String toString() {
         return "Objecte{" + "cookies=" + cookies_actuals + ", cadena=" +nom + '}';
 }
+
+    public int getGranjes() {
+        return granjes;
+    }
+
+    public void setGranjes(int granjes) {
+        this.granjes = granjes;
+    }
    
    
 }
