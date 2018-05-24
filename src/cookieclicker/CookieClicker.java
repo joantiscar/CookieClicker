@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 
 
 public class CookieClicker extends JFrame {
-
+    //Definim parametres fixos per a l'amplada i l'alçada del frame
     int FRAME_WIDTH = 1200;
     int FRAME_HEIGHT = 900;
 
@@ -26,7 +26,7 @@ public class CookieClicker extends JFrame {
     private final JLabel statusbar;
     
     public CookieClicker() {
-
+        //Fem que es pari el programa al tancar la finestra
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setLocationRelativeTo(null);
@@ -36,7 +36,7 @@ public class CookieClicker extends JFrame {
         
 
         add(new Board(statusbar));
-
+        //Fem que l'usuari no pugue redimensionar la finestra
         setResizable(false);
     }
     
