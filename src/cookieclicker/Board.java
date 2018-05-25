@@ -525,7 +525,7 @@ public class Board extends JPanel {
             repaint();
 
         } catch (Exception exc) {
-            exc.printStackTrace(); // If there was an error, print the info.
+            exc.printStackTrace();
         }
 
     }
