@@ -63,7 +63,7 @@ public class Board extends JPanel {
     private int mines;
     private int fabriques;
     private int bancs;
-    private double cookies_actuals = 0;
+    private double cookies_actuals = 999999999;
     private int frame_width = 1200;
     private int frame_height = 900;
     private int cost_cursor = 15;
